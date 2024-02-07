@@ -1,4 +1,4 @@
-package com.tryagain.tryagain.service;
+package com.tryagain.tryagain.service.aboutUser;
 
 import com.tryagain.tryagain.domain.User;
 import com.tryagain.tryagain.repository.UserRepository;

@@ -1,4 +1,4 @@
-package com.tryagain.tryagain.dto;
+package com.tryagain.tryagain.dto.aboutUser;
 
 import lombok.Getter;
 import lombok.Setter;

@@ -2,10 +2,9 @@ package com.tryagain.tryagain.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tryagain.tryagain.domain.Article;
-import com.tryagain.tryagain.dto.AddArticleRequest;
-import com.tryagain.tryagain.dto.ArticleResponse;
-import com.tryagain.tryagain.dto.UpdateArticleRequest;
-import com.tryagain.tryagain.repository.BlogRepository;
+import com.tryagain.tryagain.dto.aboutTodo.AddArticleRequest;
+import com.tryagain.tryagain.dto.aboutTodo.UpdateArticleRequest;
+import com.tryagain.tryagain.repository.TodoRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -22,9 +21,6 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 
 
-import java.util.List;
-
-import static org.assertj.core.api.Assertions.as;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -33,7 +29,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest//테스트용
 @AutoConfigureMockMvc
-class BlogControllerTest {
+class TodoControllerTest {
     @Autowired
     protected MockMvc mockMvc;
     @Autowired
@@ -41,13 +37,13 @@ class BlogControllerTest {
     @Autowired
     private WebApplicationContext context;
     @Autowired
-    BlogRepository blogRepository;
+    TodoRepository todoRepository;
 
     @BeforeEach
     public void mockMvcSetup() {
         this.mockMvc = MockMvcBuilders.webAppContextSetup(context)
                 .build();
-        blogRepository.deleteAll();
+        todoRepository.deleteAll();
     }
 
     @DisplayName("addArticle: 블로그 글 추가 !")
@@ -69,7 +65,7 @@ class BlogControllerTest {
         //then 응답코드가 201 created 인지 확인. Blog를 전체 조회해 크기가 1인지 확인하고, 실제로 저장된 데이터와 요청 값을 비교한다.
         result.andExpect(status().isCreated());
 
-        List<Article> articles = blogRepository.findAll();
+        List<Article> articles = todoRepository.findAll();
 
         assertThat(articles.size()).isEqualTo(1);
         assertThat(articles.get(0).getTitle()).isEqualTo(title);
@@ -85,7 +81,7 @@ class BlogControllerTest {
         final String title = "title";
         final String content = "content";
 
-        blogRepository.save(Article.builder()
+        todoRepository.save(Article.builder()
                 .title(title)
                 .content(content)
                 .build());
@@ -110,7 +106,7 @@ class BlogControllerTest {
         final String title = "title";
         final String content = "content";
 
-        Article savedArticle = blogRepository.save(Article.builder().
+        Article savedArticle = todoRepository.save(Article.builder().
                 title(title)
                 .content(content)
                 .build());
@@ -132,7 +128,7 @@ class BlogControllerTest {
         final String title = "title";
         final String content = "content";
 
-        Article savedArticle = blogRepository.save(Article.builder().
+        Article savedArticle = todoRepository.save(Article.builder().
                 title(title)
                 .content(content)
                 .build());
@@ -141,7 +137,7 @@ class BlogControllerTest {
         mockMvc.perform(delete(url, savedArticle.getId()))
                 .andExpect(status().isOk());
         //then
-        List<Article> articles = blogRepository.findAll();
+        List<Article> articles = todoRepository.findAll();
         assertThat(articles).isEmpty();
     }
 
@@ -153,7 +149,7 @@ class BlogControllerTest {
         final String title = "title";
         final String content = "content";
 
-        Article savedArticle = blogRepository.save(Article.builder()
+        Article savedArticle = todoRepository.save(Article.builder()
                 .title(title)
                 .content(content)
                 .build());
@@ -171,7 +167,7 @@ class BlogControllerTest {
         // then
         result.andExpect(status().isOk());
 
-        Article article = blogRepository.findById(savedArticle.getId()).get();
+        Article article = todoRepository.findById(savedArticle.getId()).get();
 
         assertThat(article.getTitle()).isEqualTo(newTitle);
         assertThat(article.getContent()).isEqualTo(newContent);

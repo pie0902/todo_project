@@ -1,10 +1,121 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
+    <meta charset="UTF-8">
+    <title>TODO LIST</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
 </head>
 <body>
-$END$
+<div class="p-5 mb-5 text-center</> bg-light">
+    <h1 class="mb-3">TODO LIST</h1>
+    <h4 class="mb-3">게시글 상세보기</h4>
+    <button type="button" class="btn btn-secondary" onClick="location.href='/articles'">전체 게시글</button>
+    <button type="button" class="btn btn-secondary" onClick="location.href='/logout'">로그아웃</button>
+</div>
+
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-lg-8">
+            <article>
+                <input type="hidden" id="article-id" th:value="${article.id}">
+                <header class="mb-4">
+                    <h1 class="fw-bolder mb-1" th:text="${article.title}"></h1>
+                    <div class="text-muted fst-italic mb-2" th:text="|Posted on ${#temporals.format(article.createdAt, 'yyyy-MM-dd HH:mm')}|"></div>
+                </header>
+                <section class="mb-5">
+                    <p class="fs-5 mb-4" th:text="${article.content}"></p>
+                </section>
+                <button type="button" id="modify-btn"
+                        th:onclick="|location.href='@{/new-article?id={articleId}(articleId=${article.id})}'|"
+                        class="btn btn-primary btn-sm">수정</button>
+                <button type="button" id="delete-btn"
+                        class="btn btn-secondary btn-sm">삭제</button>
+            </article>
+        </div>
+    </div>
+    <div class="mt-4">
+        <h4>댓글 작성</h4>
+        <form id="comment-form">
+            <textarea name="content" class="form-control mb-2" placeholder="댓글을 입력하세요..."></textarea>
+            <button type="button" class="btn btn-primary" id="submit-comment">댓글 작성</button>
+        </form>
+
+    </div>
+    <div class="mt-5">
+        <div class="comments">
+            <h3>댓글</h3>
+            <div th:each="comment : ${comments}">
+                <div class="comment">
+                    <div class="comment-header">
+                        <span th:text="${comment.username}">작성자</span>
+                        <span th:text="${#temporals.format(comment.createdAt, 'yyyy-MM-dd HH:mm')}">작성일</span>
+                    </div>
+                    <div class="comment-body">
+                        <p th:text="${comment.content}">댓글 내용</p>
+                    </div>
+                    <div class="comment-btn">
+                        <button type="button" class="btn btn-primary delete-comment" th:data-article-id="${comment.getArticle().getId()}" th:data-comment-id="${comment.getId()}">삭제</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</div>
+<script>
+    //댓글등록
+    document.getElementById('submit-comment').addEventListener('click', function() {
+        let articleId = [[${article.id}]];
+        let content = document.querySelector('textarea[name="content"]').value;
+
+        fetch(`/api/articles/${articleId}/comments`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                content: content
+            })
+        })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Success:', data);
+                location.reload(true);
+                // 성공적으로 댓글을 추가한 후의 처리 (예: 페이지 새로고침, 댓글 목록 업데이트 등)
+            })
+            .catch((error) => {
+                console.log("실패ㅐㅐㅐㅐㅐ")
+                console.error('Error:', error);
+
+            });
+    });
+    //댓글 삭제
+    document.addEventListener('DOMContentLoaded', function() {
+        document.querySelectorAll('.delete-comment').forEach(function(button) {
+            button.addEventListener('click', function() {
+                const articleId = this.getAttribute('data-article-id');
+                const commentId = this.getAttribute('data-comment-id');
+
+                if (confirm('정말 이 댓글을 삭제하시겠습니까?')) {
+                    fetch(`/api/articles/${articleId}/comments/${commentId}`, {
+                        method: 'DELETE',
+                    }).then(response => {
+                        if (response.ok) {
+                            alert('댓글이 삭제되었습니다.');
+                            window.location.reload(); // 페이지 새로고침으로 변경사항 반영
+                        } else {
+                            alert('댓글을 삭제할 수 없습니다.');
+                        }
+                    }).catch(error => console.error('Error:', error));
+                }
+            });
+        });
+    });
+
+
+
+</script>
+<script src="/article.js"></script>
+
 </body>
-</html>

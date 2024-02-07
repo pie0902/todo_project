@@ -1,4 +1,4 @@
-package com.tryagain.tryagain.dto;
+package com.tryagain.tryagain.dto.aboutTodo;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

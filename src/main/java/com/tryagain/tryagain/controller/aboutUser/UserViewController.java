@@ -1,4 +1,4 @@
-package com.tryagain.tryagain.controller;
+package com.tryagain.tryagain.controller.aboutUser;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;

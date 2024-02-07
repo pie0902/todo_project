@@ -1,9 +1,9 @@
-package com.tryagain.tryagain.service;
+package com.tryagain.tryagain.service.aboutTodo;
 
 import com.tryagain.tryagain.domain.Article;
 import com.tryagain.tryagain.domain.User;
-import com.tryagain.tryagain.dto.AddArticleRequest;
-import com.tryagain.tryagain.dto.UpdateArticleRequest;
+import com.tryagain.tryagain.dto.aboutTodo.AddArticleRequest;
+import com.tryagain.tryagain.dto.aboutTodo.UpdateArticleRequest;
 import com.tryagain.tryagain.repository.TodoRepository;
 import com.tryagain.tryagain.repository.UserRepository;
 import jakarta.transaction.Transactional;

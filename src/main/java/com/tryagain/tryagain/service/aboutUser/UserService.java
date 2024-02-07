@@ -1,9 +1,7 @@
-package com.tryagain.tryagain.service;
+package com.tryagain.tryagain.service.aboutUser;
 
 import com.tryagain.tryagain.domain.User;
-import com.tryagain.tryagain.dto.AddArticleRequest;
-import com.tryagain.tryagain.dto.AddUserRequest;
-import com.tryagain.tryagain.dto.SignUpResponse;
+import com.tryagain.tryagain.dto.aboutUser.AddUserRequest;
 import com.tryagain.tryagain.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -17,6 +15,7 @@ public class UserService {
 
     public Long save(AddUserRequest dto){
         return  userRepository.save(User.builder()
+                        .name(dto.getName())
                         .email(dto.getEmail())
                         .password(bCryptPasswordEncoder.encode(dto.getPassword()))
                 .build()).getId();
@@ -24,6 +23,7 @@ public class UserService {
     }
     public User saveUser(AddUserRequest dto){
         return  userRepository.save(User.builder()
+                .name(dto.getName())
                 .email(dto.getEmail())
                 .password(bCryptPasswordEncoder.encode(dto.getPassword()))
                 .build());
