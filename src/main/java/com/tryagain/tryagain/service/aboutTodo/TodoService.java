@@ -21,6 +21,8 @@ import java.util.Optional;
 public class TodoService {
     private final TodoRepository todoRepository;
     private final UserRepository userRepository;
+
+    //게시글 저장
     public Article save(AddArticleRequest request) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String email = null;
@@ -34,14 +36,16 @@ public class TodoService {
         return todoRepository.save(article);
     }
 
+    //게시글 전체조회
     public List<Article> findAll() {
         return todoRepository.findAll();
     }
 
+    //게시글 한개씩 조회
     public Article findById(long id){
         return todoRepository.findById(id).orElseThrow(()->new IllegalArgumentException("not fonud :" + id));
     }
-
+    //게시글 삭제
     public void delete(long id,String userEmail){
         Optional<Article> article = todoRepository.findById(id);
         if(article.isPresent()) {
@@ -57,7 +61,7 @@ public class TodoService {
             throw new IllegalArgumentException("글이 없습니다.");
         }
     }
-
+    //게시글 수정
     @Transactional
     public Article update(long id, UpdateArticleRequest request,String userEmail) {
         Article article = todoRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("not found" + id));
