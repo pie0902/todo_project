@@ -6,6 +6,7 @@ import com.tryagain.tryagain.dto.aboutTodo.AddArticleRequest;
 import com.tryagain.tryagain.dto.aboutTodo.UpdateArticleRequest;
 import com.tryagain.tryagain.repository.TodoRepository;
 import com.tryagain.tryagain.repository.UserRepository;
+import com.tryagain.tryagain.security.CustomUserDetails;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
@@ -22,12 +23,12 @@ public class TodoService {
     private final UserRepository userRepository;
     public Article save(AddArticleRequest request) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String username = null;
+        String email = null;
         if(authentication!=null&&authentication.getPrincipal() instanceof UserDetails) {
-            UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-            username = userDetails.getUsername();
+            CustomUserDetails customUserDetails = (CustomUserDetails) authentication.getPrincipal();
+            email = customUserDetails.getEmail(); // 이메일 주소 접근
         }
-        User user = userRepository.findByEmail(username).orElseThrow(()->new IllegalArgumentException("유저가 없습니다."));
+        User user = userRepository.findByEmail(email).orElseThrow(()->new IllegalArgumentException("유저가 없습니다."));
         Article article = request.toEntity();
         article.setUser(user);
         return todoRepository.save(article);

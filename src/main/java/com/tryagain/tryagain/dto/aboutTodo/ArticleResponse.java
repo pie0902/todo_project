@@ -7,9 +7,13 @@ import lombok.Getter;
 public class ArticleResponse {
     private final String title;
     private final String content;
+    private final String username;
+    private final Long id;
 
     public ArticleResponse(Article article){
+        this.id = article.getId();
         this.title = article.getTitle();
         this.content = article.getContent();
+        this.username = article.getUser().getUsername();
     }
 }

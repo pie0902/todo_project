@@ -54,9 +54,11 @@ public class Article {
     private final List<Comment> comments = new ArrayList<>();
 
     @Builder
-    public Article(String title, String content) {
+    public Article(String title, String content,User user,Long id) {
         this.title = title;
         this.content = content;
+        this.user = user;
+        this.id = id;
     }
     public void update(String title,String content) {
         this.title = title;

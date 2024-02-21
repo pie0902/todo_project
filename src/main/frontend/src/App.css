@@ -1,0 +1,265 @@
+.App {
+  text-align: center;
+}
+
+* {
+  list-style: none;
+}
+
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
+  animation: App-logo-spin infinite 20s linear;
+}
+
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.btn-box {
+  width: 30%;
+  grid-gap: 10px;
+  display: grid;
+}
+
+.board-btn {
+  display: flex;
+  grid-gap: 10px;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.board-btn button {
+  width: 15% !important;
+}
+.comments-section{
+  width:80%;
+  margin:auto;
+  margin-top:20px;
+}
+.comment-form{
+  width:80%;
+  margin:auto;
+}
+.comment-form button{
+  width:50%;
+  margin-bottom: 20px;
+  margin-top:20px;
+}
+.App-link {
+  color: white;
+  padding: 10px 10px;
+}
+
+.login-btn {
+  padding: 10px 10px;
+}
+
+/*게시글 꾸미기*/
+.article-card {
+  border: 1px solid black;
+  width: 80%;
+  border-radius: 15px;
+  margin: auto;
+  margin-top: 10px;
+}
+
+/*게시글 상세보기*/
+.article-detail-page {
+  position: relative;
+  width: 80%;
+  border-radius: 20px;
+  background-color: #ffe1e5;
+  margin: auto;
+  height: 500px;
+  padding-top: 10px;
+}
+
+.article-detail-page h3 {
+  width: 80%;
+  text-align: left;
+  margin: auto;
+}
+
+.article-detail-page h4 {
+  padding: 10px 20px;
+  margin: auto;
+  margin-bottom: 30px;
+  background-color: #ff8e8e;
+  width: 20%;
+}
+
+.article-detail-page button {
+  margin-top: 15px;
+  width: 50%;
+}
+
+.text-box {
+  width: 80%;
+  height: 60%;
+  background-color: white;
+  margin: auto;
+}
+
+.article-detail-page p {
+  width: 100%;
+  text-align: left;
+}
+
+/*페이지네이션*/
+.page-btn {
+  margin-top: 10px;
+  width: 20px;
+  border-radius: 0;
+  height: 20px;
+  background-color: white;
+  padding: 0;
+  color: black;
+  text-align: center;
+}
+
+.page-btn:hover {
+  background-color: lightpink;
+}
+
+.deleteArticle {
+  position: absolute;
+  width: 25px !important;
+  height: 25px;
+  top: 0;
+  right: 10px;
+  padding: 0 !important;
+}
+
+
+/*댓글창*/
+.comments-section {
+  margin-top: 50px;
+}
+
+.comments-section h4 {
+  margin: 0;
+  margin-bottom: 20px;
+  text-align:left ;
+}
+.comments-section h4 span{
+  background: #fffafa;
+  padding: 10px 20px;
+  border-radius: 30px;
+}
+
+.comments-section p {
+  background-color: #fff2f2;
+  border-radius: 10px;
+  padding: 10px 3px 10px 3px;
+}
+
+
+
+/*댓글 삭제 수정 버튼*/
+.comment-space {
+  position: relative;
+}
+.comment-remove-btn{
+  position: absolute;
+  width: 25px !important;
+  height: 25px;
+  top: 5px;
+  right: 10px;
+  padding: 0 !important;
+}
+.comment-edit-btn{
+  position: absolute;
+  width: 50px !important;
+  height: 25px;
+  top: 5px;
+  right:40px;
+  padding: 0 !important;
+}
+
+
+
+
+
+
+
+
+/* 로고가 회전하는 애니메이션 */
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media screen and (min-width: 1441px) {
+  .article-detail-page {
+    height: 800px;
+    width:80%;
+  }
+  .text-box{
+    width:90%;
+    height:75%;
+  }
+  .comments-section{
+    width:80%;
+    margin:auto;
+    margin-top:20px;
+  }
+  .comment-form{
+    width:80%;
+    margin:auto;
+  }
+}
+
+/*반응형*/
+@media screen and (max-width: 1440px) and (min-width: 1024px) {
+  /*    pc    */
+  /*게시글 카드*/
+  .article-card {
+    width: 50%;
+  }
+}
+
+@media screen and (max-width: 1023px) and (min-width: 768px) {
+  /*    태블릿    */
+  /*게시글 카드*/
+
+  .board-btn button {
+    width: 15% !important;
+    font-size: 12px;
+  }
+
+  .article-card {
+    width: 70%;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  /*   모바일    */
+  /*게시글 카드*/
+
+  .board-btn button {
+    width: 30% !important;
+    font-size: 12px;
+  }
+
+  .article-card {
+    width: 80%;
+  }
+  .article-detail-page h4{
+    font-size:12px;
+    width:30%;
+    text-align: left;
+    background:pink;
+  }
+}

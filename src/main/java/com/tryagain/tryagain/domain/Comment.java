@@ -1,6 +1,7 @@
 package com.tryagain.tryagain.domain;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.tryagain.tryagain.dto.aboutComment.UpdateCommentRequest;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
@@ -49,6 +50,9 @@ public class Comment {
 
     @Builder
     public Comment(String content) {
+        this.content = content;
+    }
+    public void update(String content){
         this.content = content;
     }
 }

@@ -4,14 +4,13 @@ import com.tryagain.tryagain.domain.Article;
 import com.tryagain.tryagain.dto.aboutTodo.AddArticleRequest;
 import com.tryagain.tryagain.dto.aboutTodo.ArticleResponse;
 import com.tryagain.tryagain.dto.aboutTodo.UpdateArticleRequest;
+import com.tryagain.tryagain.security.CustomUserDetails;
 import com.tryagain.tryagain.service.aboutTodo.TodoService;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -42,17 +41,39 @@ public class TodoController {
     }
     //게시글 삭제 메서드
     @DeleteMapping("api/articles/{id}")
-    public ResponseEntity<Void> deleteArticle(@PathVariable Long id, Authentication authentication) {
-        String userEmail = authentication.getName();
+    public ResponseEntity<Void> deleteArticle(@PathVariable Long id) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String userEmail = null;
+        if (authentication != null && authentication.getPrincipal() instanceof CustomUserDetails) {
+            CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
+            userEmail = userDetails.getEmail(); // 여기에서 이메일 주소를 얻습니다.
+        }
+
+        if (userEmail == null) {
+            // 사용자 이메일을 얻지 못한 경우의 처리 로직 (예: 에러 응답 반환)
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
+        System.out.println("User email: " + userEmail);
         todoService.delete(id,userEmail);
 
         return ResponseEntity.ok().build();
     }
     //게시글 수정 메서드
     @PutMapping("api/articles/{id}")
-    public ResponseEntity<Article> updateArticle(@PathVariable Long id, @RequestBody UpdateArticleRequest request ,Authentication authentication){
-        String userEmail = authentication.getName();
-        Article updateArticle = todoService.update(id,request,userEmail);
+    public ResponseEntity<Article> updateArticle(@PathVariable Long id, @RequestBody UpdateArticleRequest request){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String userEmail = null;
+        if (authentication != null && authentication.getPrincipal() instanceof CustomUserDetails) {
+            CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
+            userEmail = userDetails.getEmail(); // 여기에서 이메일 주소를 얻습니다.
+        }
+
+        if (userEmail == null) {
+            // 사용자 이메일을 얻지 못한 경우의 처리 로직 (예: 에러 응답 반환)
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
+        System.out.println("User email: " + userEmail);
+        Article updateArticle = todoService.update(id, request, userEmail);
         return ResponseEntity.ok().body(updateArticle);
     }
 }
