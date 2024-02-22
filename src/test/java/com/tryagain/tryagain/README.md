@@ -49,4 +49,4 @@ void getId(){
 }
 ```
 
-* 전체조회와 비슷하지만 todoServic의 findById를 사용해서 검증 했습니다.
+* 전체조회와 비슷하지만 todoServic의 findById를 사용해서 검증 했습니다.
