@@ -23,11 +23,14 @@ void getAll() {
     assertEquals(testArticle.getContent(), foundArticles.get(0).getContent());  
 }
 ```
+
 * given-when-then 사용 했습니다.
 * AddArticleRequest DTO를 사용했습니다.
 * List<Article> foundArticles 0번째와 비교해서 검증했습니다.
 
 ### 게시글 한개씩 조회
+
+```
 @Test  
 @DisplayName("게시글 한개씩 조회")  
 void getId(){  
@@ -45,4 +48,5 @@ void getId(){
     assertEquals(testArticle.getContent(), foundArticle.getContent());  
 }
 ```
+
 * 전체조회와 비슷하지만 todoServic의 findById를 사용해서 검증 했습니다.
