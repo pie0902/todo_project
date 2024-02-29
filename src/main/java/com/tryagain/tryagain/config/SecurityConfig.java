@@ -2,7 +2,6 @@ package com.tryagain.tryagain.config;
 
 import com.tryagain.tryagain.jwt.JwtFilter;
 import com.tryagain.tryagain.jwt.JwtUtil;
-import com.tryagain.tryagain.security.LoginFilter;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -39,26 +38,19 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-            .csrf(auth -> auth.disable()) // CSRF 보호 기능을 비활성화
-            .httpBasic(auth -> auth.disable()) // HTTP 기본 인증 비활성화
-            // 폼 로그인 설정 활성화
-            .formLogin(auth -> auth
-                .loginPage("/login") // 로그인 페이지 URL 설정
-                .defaultSuccessUrl("/", true) // 로그인 성공 시 리다이렉트할 기본 URL 설정
-                .permitAll() // 로그인 페이지에 대한 접근을 모두에게 허용
+            .csrf(csrf -> csrf.disable()) // CSRF 보호 기능 비활성화
+            .cors(cors -> {}) // 필요한 경우 CORS 설정을 여기에 추가
+            .httpBasic(httpBasic -> httpBasic.disable()) // HTTP 기본 인증 비활성화
+            .sessionManagement(sessionManagement ->
+                sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // 세션 사용 안함
+            .authorizeHttpRequests(authorize -> authorize
+                // 인증이 필요 없는 요청 경로 설정
+                .requestMatchers("/api/auth/**", "/login", "/", "/index.html", "/static/**", "/my_img/**", "/css/**", "/v3/api-docs/**", "/api/users/signup", "/swagger-ui/**", "/swagger-ui.html").permitAll()
+                // 그 외 모든 요청은 인증 필요
+                .anyRequest().authenticated()
             )
-            .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/test","/api/user/info").authenticated()//"index"
-
-                .requestMatchers("/login","/","/index.html","/static/**","/my_img/**","/css/**", "/v3/api-docs/**", "/api/users/signup",
-                    "/swagger-ui/**", "/swagger-ui.html").permitAll()
-                .anyRequest().authenticated())
-            .addFilterBefore(new JwtFilter(jwtUtil), LoginFilter.class)
-            .addFilterBefore(
-                new LoginFilter(authenticationManager(authenticationConfiguration), jwtUtil),
-                UsernamePasswordAuthenticationFilter.class)
-            .sessionManagement(
-                session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+            // JWT 인증 필터 설정
+            .addFilterBefore(new JwtFilter(jwtUtil), UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
